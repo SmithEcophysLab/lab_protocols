@@ -7,10 +7,12 @@
 # Last edit by: Evan Perkowski (evan.a.perkowski@ttu.edu)
 #
 # Description: helper function that reads an uncleaned LI-6800 source file 
-# (compatible with both a UTF-8 or .xlsx source file) and converts it into
-# a clean and tidy file. The helper function is implemented into a second
-# function (`clean_licor_files`) to automate the process of cleaning all 
-# LI-6800 source files in a working directory.
+# (compatible with both a UTF-8 or .csv source file) and converts it into
+# a clean and tidy file. The function currently is not operational for
+# .xslx files as loading LI-6800 .xslx files seems to replace data with 
+# zeroes. The helper function is implemented into a second function 
+# (`clean_licor_files`) to automate the process of cleaning all LI-6800 
+# source files in a working directory.
 #
 # Arguments:
 # - path                = path of uncleaned .txt LI-6800 file
@@ -30,14 +32,14 @@ clean_licor_file <- function(path = "",
   # Boolean: if is_excel == TRUE, then read file using readxl::read_excel.
   # if is_excel == FALSE, then read file using utils::read.table
   is_excel <- grepl(".xlsx$", path)
+  is_csv <- grepl(".csv$", path)
   
   if(is_excel) {
-    # Read file using readxl::read_excel
-    data <- suppressMessages(
-      readxl::read_excel(path = path, 
-                         sheet = 1,
-                         col_names = TRUE)) |>
-      data.frame()
+    stop("Function does not currently support .xlsx files. Convert to .csv and try again.")
+  }
+  
+  if(is_csv) {
+    data <- read.csv(file = path)
     
     # Assign all NA values a zero (needed for next step to remove 
     # all rows before SysConst == "obs")
@@ -52,7 +54,7 @@ clean_licor_file <- function(path = "",
     names(data_noheader) <- data_noheader[1, ]
     data_clean <- data_noheader[-c(1:2), ]
 
-  } else if(!is_excel){ # Read file using utils::read.table
+  } else if(!is_csv){ # Read file using utils::read.table
     
     # Determine maximum number of columns (needed to designate col.names
     # in utils::read.table)
