@@ -121,10 +121,10 @@ clean_licor_file <- function(path = "",
 #                       
 #
 # Returns:
-# - if return_list = TRUE, the function will write a separate .csv file for each 
-#   source LI-6800 file into the folder designated as the write_directory. Note 
-#   that the function automatically adds "_cleaned" to the end of each .csv, but 
-#   this can easily be removed by the user
+# - if return_list = FALSE (default), the function will write a separate .csv file 
+#   for each source LI-6800 file into the folder designated as the write_directory. 
+#   Note that the function automatically adds "_cleaned" to the end of each .csv, 
+#   but this can easily be removed by the user
 # - if return_list = TRUE, the function will compile all cleaned LI-6800 files 
 #   into a single list of data frames
 clean_licor_files <- function(directory_path,
