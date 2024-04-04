@@ -41,10 +41,6 @@ clean_licor_file <- function(path = "",
   if(is_csv) {
     data <- read.csv(file = path)
     
-    # Assign all NA values a zero (needed for next step to remove 
-    # all rows before SysConst == "obs")
-    data$SysConst[is.na(data$SysConst)] <- 0
-    
     # Remove all rows that occur before SystConst == "obs", but
     # keep all rows after SystConst == "obs"
     data_noheader <- data[cumsum(data$SysConst == "obs") >= 1, ]
@@ -54,7 +50,7 @@ clean_licor_file <- function(path = "",
     names(data_noheader) <- data_noheader[1, ]
     data_clean <- data_noheader[-c(1:2), ]
 
-  } else if(!is_csv){ # Read file using utils::read.table
+  } else if(!is_csv & !is_excel){ # Read file using utils::read.table
     
     # Determine maximum number of columns (needed to designate col.names
     # in utils::read.table)
@@ -160,4 +156,4 @@ clean_licor_files <- function(directory_path,
     }
     
   }
-}  
+}
